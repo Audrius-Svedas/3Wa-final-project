@@ -15,7 +15,17 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
+        'surname',
+        'date_of_birth',
+        'phone',
+        'address',
+        'city',
+        'zip',
+        'country_id',
+        'admin_role',
     ];
 
     /**
@@ -26,4 +36,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function country() {
+      return $this->hasOne('App\Country');
+    }
+
+    public function adminRole()
+    {
+
+    return $this->admin_role; // this looks for an admin column in your users table
+    }
 }
