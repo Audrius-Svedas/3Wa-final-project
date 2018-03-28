@@ -120,12 +120,11 @@
       				    Shop <b class="caret"></b>
       				  	</a>
       	          <ul class="dropdown-menu" role="menu" aria-labelledby="shop-dropdown">
-      	          	<li role="presentation">
-      								<a href="" role="menuitem" tabindex="-1">Category name 1</a>
-      							</li>
+									@foreach ($categories as $category)
 										<li role="presentation">
-      								<a href="" role="menuitem" tabindex="-1">Category name 2</a>
+      								<a href="" role="menuitem" tabindex="-1">{{ $category->category }}</a>
       							</li>
+									@endforeach
       	          </ul>
       				  </li>
       				</ul>
