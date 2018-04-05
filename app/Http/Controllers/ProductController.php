@@ -1,34 +1,60 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Product;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Product;
 use App\Helpers\PhotoHelper;
 
 class ProductController extends Controller
 {
+
+    public function __construct(PhotoHelper $photoHelper) {
+       // $this->middleware('auth')->except('index');
+       $this->middleware('adminRole')->except('index', 'showByCategory', 'show');
+       $this->photoHelper = $photoHelper;
+     }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
 
-     public function __construct(PhotoHelper $photoHelper) {
-        // $this->middleware('auth')->except('index');
-        $this->middleware('adminRole')->except('index', 'show');
-        $this->photoHelper = $photoHelper;
-    }
-
     public function index()
     {
 
-        $categories = Product::distinct()->get(['category']);
-        $products = Product::paginate(12);
+        $productCategories = Product::distinct()->get(['category']);
+        $products = Product::paginate(9);
 
         return view('index', [
             'products' => $products,
-            'categories' => $categories
+            'productCategories' => $productCategories
+        ]);
+    }
+
+    /**
+     * Display a specified listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function showByCategory()
+    {
+
+        $productCategories = Product::distinct()->get(['category']);
+        // $products = Product::paginate(9);
+        //
+        $categoryProducts = Product::where('category', $productCategories->category)->get();
+
+        $dishInCart = [];
+        foreach($cartItems as $cartItem) {
+          $dishInCart[] = $cartItem->dishes;
+        }
+
+        return view('productByCategory', [
+            'categoryProducts' => $categoryProducts,
+            'productCategories' => $productCategories
         ]);
     }
 
@@ -84,9 +110,12 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+      $product = Product::findOrFail($id);
+      return view('product', [
+        'product' => $product
+      ]);
     }
 
     /**
@@ -160,7 +189,7 @@ class ProductController extends Controller
       $path = storage_path('app/' . $product->imageUrl);
 
       if (file_exists($path)){
-          unlink($path);
+          Storage::delete($path);
       }
     }
 
@@ -170,19 +199,19 @@ class ProductController extends Controller
         return $data->validate([
             'manufacturer' => 'required|string|max:20',
             'model' => 'required|string|max:20',
-            'quantity' => 'required|integer|max:2',
+            'quantity' => 'required|integer|max:12',
             'category' => 'required|string|max:20',
-            'frame_size' => 'required|numeric|max:4',
+            'frame_size' => 'required|numeric|min:16|max:22',
             'frame' => 'required|string|max:20',
             'fork' => 'required|string|max:20',
             'gear_shifters' => 'required|string|max:20',
             'front_delailleur' => 'required|string|max:20',
             'rear_delailleur' => 'required|string|max:20',
             'brakes' => 'required|string|max:20',
-            'gears_amount' => 'required|integer|max:2',
-            'wheel_size' => 'required|numeric|max:4',
-            'weight' => 'required|numeric|max:5',
-            'price' => 'required|numeric|max:7',
+            'gears_amount' => 'required|numeric|min:18|max:27',
+            'wheel_size' => 'required|numeric|min:24|max:29',
+            'weight' => 'required|numeric|min:10|max:20',
+            'price' => 'required|numeric|max:2500',
             'description' => 'required|string|max:255',
             'imageUrl' => 'required|mimes:jpeg,bmp,png|max:6000'
           ]);

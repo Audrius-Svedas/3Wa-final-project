@@ -3,9 +3,9 @@
  */
 /*! normalize.css v3.0.0 | MIT License | git.io/normalize */
 /*@import "../bower_components/bootstrap/dist/css/bootstrap.css";*/
-@import "../bower_components/OwlCarousel/owl-carousel/owl.carousel.css";
-@import "../bower_components/OwlCarousel/owl-carousel/owl.theme.css";
-@import "../bower_components/chosen_v1.1.0/chosen.css";
+/* @import "../bower_components/OwlCarousel/owl-carousel/owl.carousel.css";
+@import "../bower_components/OwlCarousel/owl-carousel/owl.theme.css"; */
+/* @import "../bower_components/chosen_v1.1.0/chosen.css"; */
 
 /* html {
   font-family: sans-serif;
@@ -330,6 +330,10 @@ img {
   display: inline-block;
   max-width: 100%;
   height: auto;
+}
+#logo-img{
+  width: 60px;
+  margin-top: -20px;
 }
 .img-circle {
   border-radius: 50%;
@@ -7336,7 +7340,7 @@ input[type="password"]:focus + label {
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   background: none;
-  color: #cccccc;
+  color: #595959;
 }
 .price-list .order-total {
   background: #cccccc;

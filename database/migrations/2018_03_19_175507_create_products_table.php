@@ -31,7 +31,7 @@ class CreateProductsTable extends Migration
           $table->double('weight', 4,2);
           $table->double('price', 6,2);
           $table->string('description');
-          $table->string('imageUrl');
+          $table->string('imageUrl')->nullable();
           $table->timestamps();
         });
     }

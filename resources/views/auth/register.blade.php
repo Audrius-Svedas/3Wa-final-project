@@ -9,7 +9,7 @@
         <div class="row">
         	<div class="col-xs-12 col-sm-4 col-md-offset-4">
             <h2>{{ __('Register a New Account') }}</h2>
-        		<form class="" action="{{ route('register') }}" method="POST">
+        		<form class="" action="{{ route('register') }}" method="POST" novalidate>
               @csrf
         			<div class="row">
         				<div class="col-xs-12 form-group">
@@ -34,27 +34,42 @@
                   <div class="row">
                     <div class="col-xs-12 col-sm-4">
             					<select type="number" name="year" class="form-control"  value="" required autofocus/>
-                        <option value="">{{ __('Date') }}</option>
+                        <option value="" disabled selected>{{ __('Date') }}</option>
                       @for ($i=date('Y'); $i>1949; $i--)
                         <option value="{{ $i }}" @if(old('year') == $i) {{ 'selected' }} @endif>{{ $i }}</option>
                       @endfor
                       </select>
+                      @if ($errors->has('year'))
+                          <span class="invalid-feedback">
+                              <strong>{{ $errors->first('year') }}</strong>
+                          </span>
+                      @endif
                     </div>
                     <div class="col-xs-12 col-sm-4">
                       <select type="number" name="month" class="form-control"  value="" required autofocus/>
-                        <option value="">{{ __('Of') }}</option>
+                        <option value="" disabled selected>{{ __('Of') }}</option>
                       @for ($i=1; $i<=12; $i++)
                         <option value="{{ $i }}" @if(old('month') == $i) {{ 'selected' }} @endif>{{ $i }}</option>
                       @endfor
                       </select>
+                      @if ($errors->has('month'))
+                          <span class="invalid-feedback">
+                              <strong>{{ $errors->first('month') }}</strong>
+                          </span>
+                      @endif
                     </div>
                     <div class="col-xs-12 col-sm-4">
                       <select type="number" name="day" class="form-control"  value="" required autofocus/>
-                        <option value="">{{ __('Birth *') }}</option>
+                        <option value="" disabled selected>{{ __('Birth *') }}</option>
                       @for ($i=1; $i<=31; $i++)
                         <option value="{{ $i }}" @if(old('day') == $i) {{ 'selected' }} @endif>{{ $i }}</option>
                       @endfor
                       </select>
+                      @if ($errors->has('day'))
+                          <span class="invalid-feedback">
+                              <strong>{{ $errors->first('day') }}</strong>
+                          </span>
+                      @endif
                     </div>
                   </div>
         				</div>
@@ -79,28 +94,28 @@
                 <div class="col-xs-12 form-group">
         					<input type="text" name="city" value="{{ old('city') }}" class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}"  placeholder="{{ __('City *') }}" required autofocus/>
         					<label for="city">{{ __('City') }}</label>
-                  @if ($errors->has('name'))
+                  @if ($errors->has('city'))
                       <span class="invalid-feedback">
-                          <strong>{{ $errors->first('name') }}</strong>
+                          <strong>{{ $errors->first('city') }}</strong>
                       </span>
                   @endif
         				</div>
-                <div class="col-xs-6 form-group">
-        					<select type="text" name="country" class="form-control"  value="" required autofocus/>
-                    <option value="">{{ __('Country *') }}</option>
-                  @foreach ($countries as $country)
-          					<option value="{{ $country->id }}" @if(old('country') == $country->id) {{ 'selected' }} @endif>{{ $country->name }}</option>
-                  @endforeach
+                <div class="col-xs-12 col-sm-6 form-group">
+        					<select name="country" class="form-control"/>
+                    <option value="" disabled selected>{{ __('Country *') }}</option>
+                    @foreach ($countries as $country)
+            					<option value="{{ $country->id }}" @if(old('country') == $country->id) {{ 'selected' }} @endif>{{ $country->name }}</option>
+                    @endforeach
+                  </select>
                   @if ($errors->has('country'))
-                      <span class="help-block">
+                      <span class="invalid-feedback">
                           <strong>{{ $errors->first('country') }}</strong>
                       </span>
                   @endif
-                  </select>
         				</div>
                 <div class="col-xs-12 col-sm-6 form-group">
         					<input type="text" name="zip" value="{{ old('zip') }}" class="form-control{{ $errors->has('zip') ? ' is-invalid' : '' }}"  placeholder="{{ __('Zip *') }}" required autofocus/>
-        					<label for="city">{{ __('Zip') }}</label>
+        					<label for="zip">{{ __('Zip') }}</label>
                   @if ($errors->has('zip'))
                       <span class="invalid-feedback">
                           <strong>{{ $errors->first('zip') }}</strong>
@@ -137,6 +152,5 @@
         	</div>
         </div>
       </section>
-
 
 @endsection

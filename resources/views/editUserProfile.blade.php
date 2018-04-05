@@ -9,11 +9,11 @@
         <div class="row">
         	<div class="col-xs-12 col-sm-4 col-md-offset-4">
             <h2>{{ __('Edit your Profile') }}</h2>
-        		<form class="" action="{{ route('updateProfile', Auth::user()->id) }}" method="POST">
+        		<form class="" action="{{ route('updateProfile', Auth::user()->id) }}" method="POST" novalidate>
               @csrf
         			<div class="row">
         				<div class="col-xs-12 form-group">
-        					<input name="name" type="text" value="{{ old('name', Auth::user()->name) }}" class="form-control{{ $errors->has('name', Auth::user()->name) ? ' is-invalid' : '' }}" placeholder="{{ __('First Name *') }}" required autofocus/>
+        					<input name="name" type="text" value="{{ old('name', Auth::user()->name) }}" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('First Name *') }}" required autofocus/>
         					<label for="name">{{ __('First Name') }}</label>
                   @if ($errors->has('name'))
                       <span class="invalid-feedback">
@@ -33,28 +33,43 @@
                 <div class="col-xs-12 form-group">
                   <div class="row">
                     <div class="col-xs-12 col-sm-4">
-            					<select type="number" name="year" class="form-control" required autofocus/>
-                        <option value="">{{ __('Date') }}</option>
+            					<select name="year" class="form-control" required autofocus/>
+                        <option value="" disabled selected>{{ __('Date') }}</option>
                       @for ($i=date('Y'); $i>1949; $i--)
                         <option value="{{ $i }}" {{ ($i == date('Y', strtotime(Auth::user()->date_of_birth)) ? "selected":"") }}>{{ $i }}</option>
                       @endfor
                       </select>
+                      @if ($errors->has('year'))
+                          <span class="invalid-feedback">
+                              <strong>{{ $errors->first('year') }}</strong>
+                          </span>
+                      @endif
                     </div>
                     <div class="col-xs-12 col-sm-4">
-                      <select type="number" name="month" class="form-control" required autofocus/>
-                        <option value="">{{ __('Of') }}</option>
+                      <select name="month" class="form-control" required autofocus/>
+                        <option value="" disabled selected>{{ __('Of') }}</option>
                       @for ($i=1; $i<=12; $i++)
                         <option value="{{ $i }}" {{ ($i == date('m', strtotime(Auth::user()->date_of_birth)) ? "selected":"") }}>{{ $i }}</option>
                       @endfor
                       </select>
+                      @if ($errors->has('month'))
+                          <span class="invalid-feedback">
+                              <strong>{{ $errors->first('month') }}</strong>
+                          </span>
+                      @endif
                     </div>
                     <div class="col-xs-12 col-sm-4">
-                      <select type="number" name="day" class="form-control"  value="" required autofocus/>
-                        <option value="">{{ __('Birth *') }}</option>
+                      <select name="day" class="form-control"  value="" required autofocus/>
+                        <option value="" disabled selected>{{ __('Birth *') }}</option>
                       @for ($i=1; $i<=31; $i++)
                         <option value="{{ $i }}" {{ ($i == date('d', strtotime(Auth::user()->date_of_birth)) ? "selected":"") }}>{{ $i }}</option>
                       @endfor
                       </select>
+                      @if ($errors->has('day'))
+                          <span class="invalid-feedback">
+                              <strong>{{ $errors->first('day') }}</strong>
+                          </span>
+                      @endif
                     </div>
                   </div>
         				</div>
@@ -87,11 +102,16 @@
         				</div>
                 <div class="col-xs-12 col-sm-6 form-group">
         					<select type="text" name="country" class="form-control"  value="" required autofocus/>
-                    <option value="">{{ __('Country *') }}</option>
+                    <option value="" disabled selected>{{ __('Country *') }}</option>
                   @foreach ($countries as $country)
           					<option value="{{ $country->id }}" {{ ($country->id == Auth::user()->country_id ? "selected":"") }}>{{ $country->name }}</option>
                   @endforeach
                   </select>
+                  @if ($errors->has('country'))
+                      <span class="invalid-feedback">
+                          <strong>{{ $errors->first('country') }}</strong>
+                      </span>
+                  @endif
         				</div>
                 <div class="col-xs-12 col-sm-6 form-group">
         					<input type="text" name="zip" value="{{ old('zip', Auth::user()->zip) }}" class="form-control{{ $errors->has('zip') ? ' is-invalid' : '' }}"  placeholder="{{ __('Zip *') }}" required autofocus/>
