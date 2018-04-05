@@ -10,9 +10,12 @@
             <h4>Categories</h4>
             <ul class="list-unstyled categories-group">
               @foreach ($productCategories as $productCategory)
+              <form class="custom" action="{{ route('productByCategory') }}" method="POST">
                 <li>
-                    <a href="{{ route('productByCategory', $productCategory->category) }}" class=""><span class="badge">No</span>{{ $productCategory->category }}</a>
+                    <input type="hidden" name="product_category" value="{{ $productCategory->category }}"/>
+                    <button type="submit" class="btn" role="button">{{ $productCategory->category }}</button>
                 </li>
+              </form>
               @endforeach
             </ul>
           </div>
@@ -65,5 +68,5 @@
     </section>
 
 
-  
+
 @endsection

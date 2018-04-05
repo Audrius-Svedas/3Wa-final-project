@@ -80,8 +80,7 @@
       				  </li>
       				</ul>
 							<ul class="nav navbar-nav">
-							  <li class=""><a href="#">About</a></li>
-							  <li class=""><a href="#">Contact</a></li>
+							  <li class=""><a href="{{ route('contacts') }}">Contact</a></li>
 							</ul>
       			</div>
       		</div>
@@ -111,9 +110,9 @@
     				<!-- content("footer-menu") -->
 						<ul class="list-unstyled">
 						  <li>&copy; BIS 2018</li>
-						  <li><a href="#">Shop</a></li>
+						  <li><a href="{{ route('index') }}">Shop</a></li>
 						  <li><a href="#">About</a></li>
-						  <li><a href="#">Contact</a></li>
+						  <li><a href="{{ route('contacts') }}">Contact</a></li>
 
 						</ul>
     			</div>

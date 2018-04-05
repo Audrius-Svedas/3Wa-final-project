@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'ProductController@index')->name('index');
 
 Auth::routes();
 
@@ -30,6 +28,7 @@ Route::post('/storeProduct', 'ProductController@store')->name('storeProduct');
 Route::get('/editProduct/{id}', 'ProductController@edit')->name('editProduct');
 Route::post('/updateProduct/{id}', 'ProductController@update')->name('updateProduct');
 Route::get('/deleteProduct/{id}', 'ProductController@destroy')->name('deleteProduct');
+Route::get('/contacts', 'ContactsController@showContacts')->name('contacts');
 
 Route::post('/addToCart', 'CartController@store')->name('addToCart');
 Route::get('/destroyCartItem/{id}', 'CartController@destroy')->name('deleteCartItem');
