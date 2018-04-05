@@ -107,7 +107,6 @@
     		</div>
     		<div class="footer-info wrap row">
     			<div class="col-sm-8">
-    				<!-- content("footer-menu") -->
 						<ul class="list-unstyled">
 						  <li>&copy; BIS 2018</li>
 						  <li><a href="{{ route('index') }}">Shop</a></li>

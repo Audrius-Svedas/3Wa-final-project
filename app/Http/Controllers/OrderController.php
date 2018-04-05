@@ -60,13 +60,13 @@ class OrderController extends Controller
         // payment_canceled
 
         // $post['payment_status'] = 'payment_pending';
-        $user= User::findOrFail($id);
+
         $post = [
           'payment_status' => 'payment_pending',
-          'shipping_address' => $user->address,
-          'shipping_city' => $user->city,
-          'shipping_zip' => $user->zip,
-          'shipping_country' => $user->gcountry
+          'shipping_address' => NULL,
+          'shipping_city' => NULL,
+          'shipping_zip' => NULL,
+          'shipping_country' => NULL
         ];
 
         $order = Order::create($post);
@@ -82,7 +82,9 @@ class OrderController extends Controller
           $cartItem->save();
         }
 
-        $this->payseraHelper->payseraPay($order->id, $order->total_amount);
+        return redirect()->route('editOrder');
+
+
     }
 
     /**
@@ -93,7 +95,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        if(Auth::user()->isAdmin()){
+        if(Auth::user()->adminRole()){
           $orders = Order::get();
         }
         else{
@@ -133,9 +135,12 @@ class OrderController extends Controller
      * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function edit(Order $order)
+    public function edit($id)
     {
-        //
+        $order = Order::findOrFail($id);
+        return view ('order', [
+          'order' => $order
+        ]);
     }
 
     /**
@@ -145,9 +150,21 @@ class OrderController extends Controller
      * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validator($request);
+
+        $post = [
+          'shipping_address' => $request->get('shipping_address'),
+          'shipping_city' => $request->get('shipping_city'),
+          'shipping_zip' => $request->get('shipping_zip'),
+          'shipping_country' => $request->get('shipping_country')
+        ];
+
+        $order = Order::findOrFail($id);
+        $order->update($post);
+
+        $this->payseraHelper->payseraPay($order->id, $order->total_amount);
     }
 
     /**
@@ -156,9 +173,11 @@ class OrderController extends Controller
      * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order)
+    public function destroy($id)
     {
-        //
+        $order = Order::findOrFail($id);
+        $order->delete();
+        return redirect()->route('index');
     }
 
     public function paymentSuccess() {
@@ -182,5 +201,14 @@ class OrderController extends Controller
       $orderAmount = Order::findOrFail($id)->total_amount;
       $this->payseraHelper->payseraPay($id, $orderAmount);
 
+    }
+
+    protected function validator($data)
+    {
+        return $data->validate([
+            'shipping_address' => 'required|string|max:255',
+            'shipping_city' => 'required|string|max:255',
+            'shipping_zip' => 'required|string|max:10'
+          ]);
     }
 }

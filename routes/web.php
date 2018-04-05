@@ -35,5 +35,12 @@ Route::get('/destroyCartItem/{id}', 'CartController@destroy')->name('deleteCartI
 Route::get('/cart', 'CartController@show')->name('showCart');
 
 Route::post('/order', 'OrderController@store')->name('order');
-Route::get('/orders_show', 'OrderController@show')->name('orders_show');
+Route::get('/editOrder/{id}', 'OrderController@edit')->name('editOrder');
+Route::get('/showOrder/{id}', 'OrderController@show')->name('showOrder');
 Route::get('/orderView', 'OrderController@index')->name('orderView');
+Route::get('/deleteOrder/{id}', 'DishesController@destroy')->name('deleteOrder');
+Route::post('/updateOrder/{id}', 'OrderController@update')->name('order');
+
+Route::get('/payment_success', 'OrderController@paymentSuccess');
+Route::get('/payment_cancel', 'OrderController@paymentCancel');
+Route::get('/make_payment/{id}', 'OrderController@payNow')->name('make_payment');

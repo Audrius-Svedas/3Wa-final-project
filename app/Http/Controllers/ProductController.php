@@ -47,9 +47,7 @@ class ProductController extends Controller
         //
         $categoryProducts = Product::where('category', $productCategories->category)->get();
 
-        $dishInCart = [];
-        foreach($cartItems as $cartItem) {
-          $dishInCart[] = $cartItem->dishes;
+
         }
 
         return view('productByCategory', [
